@@ -1,0 +1,400 @@
+{
+  "$schema": "./config.schema.json",
+  "site": {
+    "title": "Measuring Source Fidelity, Exculpatory Recall, and Generative Suspicion in AI-Drafted Police Reports",
+    "venue": "AAAI 2026 Fall Symposium Series",
+    "description": "FACETS-PR is a six-axis framework of sixteen metrics, with a vendor-independent protocol, for measuring the substantive quality of AI-drafted police reports. It is instantiated on four open-weight models over BWCSyn-90, a synthetic, ground-truth-annotated body-worn camera corpus.",
+    "keywords": "AI-Assisted Police Reports, Large Language Models, Source Fidelity, Exculpatory Recall, Brady, Generative Suspicion, Dialect Parity, African American English, California SB 524, Penal Code 13663, Body-Worn Camera, Measurement, Evaluation, FACETS-PR, BWCSyn-90, AAAI Fall Symposium 2026",
+    "favicon": "favicon.ico",
+    "lang": "en",
+    "url": "",
+    "publicationDate": "2026"
+  },
+  "authors": [
+    {
+      "name": "Aizierjiang Aiersilan",
+      "url": "https://ezharjan.github.io/",
+      "affiliations": [ 1 ]
+    },
+    {
+      "name": "Yeershanati Wuernikebai",
+      "affiliations": [ 2 ]
+    }
+  ],
+  "affiliations": [ { "id": 1, "name": "The George Washington University" }, { "id": 2, "name": "Washington and Lee University School of Law" } ],
+  "links": [
+    {
+      "type": "paper",
+      "label": "Paper",
+      "icon": "fas fa-file-pdf",
+      "url": "https://aaai.org/conference/fall-symposia/2026-fall-symposium-series-2/",
+      "enabled": true
+    },
+    { "type": "arxiv", "label": "arXiv", "icon": "ai ai-arxiv", "url": "https://arxiv.org/", "enabled": true },
+    { "type": "code", "label": "Code", "icon": "fab fa-github", "url": "https://github.com/Ezharjan/FACETS", "enabled": true },
+    { "type": "dataset", "label": "Dataset", "icon": "fas fa-database", "url": "https://github.com/Ezharjan/FACETS/tree/master/data", "enabled": true },
+    { "type": "poster", "label": "Poster", "icon": "fas fa-file-image", "url": "paper_poster.pdf", "enabled": false },
+    { "type": "confab", "label": "Confab", "icon": "fas fa-calendar-check", "url": "https://cal.com/ezhar/30min", "enabled": true }
+  ],
+  "abstract": {
+    "title": "Abstract",
+    "body": "California Senate Bill 524, codified at Penal Code §&nbsp;13663 and effective 1 January 2026, is the most prescriptive state regulation to date of the artificial-intelligence systems that draft official law-enforcement reports. It compels disclosure, officer certification, retention of the first AI draft, and an audit trail, yet it says nothing about the substantive quality of the draft it makes discoverable, and the empirical record to date consists of a field trial of writing speed, officers’ own perceptions, and human-rater quality scales. We propose <b>FACETS-PR</b> (<b>F</b>idelity, <b>A</b>symmetric exculpatory recall, <b>C</b>ognitive disengagement, <b>E</b>quity, <b>T</b>raceability, <b>S</b>uspicion inflation, for <b>P</b>olice <b>R</b>eports), a six-axis framework of sixteen metrics, each treated as a measurement model whose construct-validity claim is stated explicitly rather than assumed. Two components are new: a computational form for the doctrinal notion of generative suspicion, and a paired-dialect probe, adapted from the matched-guise paradigm, that pairs Standard American English transcripts with African American English renderings of the same propositional content. A vendor-independent protocol accompanies the framework, running end to end on open-weight models over a synthetic, ground-truth-annotated body-worn camera corpus stratified by conditions that vendor documentation identifies as degrading draft quality. Instantiating it on four open-weight models yields five findings and two surprises. Quotation-marked retention of evidentiary utterances falls far below one half for every model, with large effect sizes, although a per-utterance audit attributes more of the shortfall, pooled across the panel, to verbatim reproduction stripped of its quotation marks than to paraphrase. No model emits the statutory disclosure string by default. Inculpatory content is recalled more reliably than exculpatory content in two of four models, an asymmetry that survives a direct test against the competing explanation that it merely tracks ground-truth set sizes. Sentences asserting legal conclusions that no single transcript turn entails appear in every model, at a rate that is reliably above zero when the panel is pooled but that no individual model’s test resolves after correction for multiple comparisons. Officer-role reviewers leave roughly one deliberately impossible sentence in five standing. Against prediction, the drafts hedge rather than harden the transcript’s epistemic stance, and we detect no dialect disparity on any suspicion-axis metric, nor on the recall asymmetry. The panel is deliberately modest, comprising quantised three- to eight-billion-parameter checkpoints rather than the frontier-scale proprietary systems on which deployed products are built, so these magnitudes characterise the instrument on a designed stress test rather than any commercial tool. Verification, disclosure, and accountability cannot be exercised over what has never been characterised; FACETS-PR is offered as one candidate instrument, and its reference implementation is released with this manuscript."
+  },
+  "sections": [
+    {
+      "type": "list",
+      "title": "Contributions",
+      "ordered": true,
+      "align": "left",
+      "items": [
+        "<b>FACETS-PR</b>, a six-axis framework of sixteen metric definitions pairing each pathology with an estimator whose construct-validity claim is stated so that it can be contested.",
+        "A <b>computational form of “generative suspicion”</b> as four measures, and a <b>paired-dialect probe</b> for the police-report domain supporting audits of the kind California’s Racial Justice Act contemplates.",
+        "A <b>protocol</b> needing no proprietary interface, over a <b>synthetic ground-truth corpus</b> whose difficulty strata are text-level analogues of four of the five degradation scenarios the vendor discloses.",
+        "An <b>instantiation on four open-weight models</b>, documented in datasheet and model-card style, that is also an audit of the instrument: four of its fourteen reported quantities prove uninformative as operationalised, and we report that alongside the positive results."
+      ]
+    },
+    {
+      "type": "group",
+      "title": "The FACETS-PR Framework",
+      "blocks": [
+        {
+          "type": "text",
+          "align": "justify",
+          "body": "FACETS-PR targets the drafting stage of the three-stage AI-assisted reporting pipeline (recording, transcription, and drafting), in which a large language model turns a body-worn camera (BWC) transcript into a first draft for the officer to review and sign. This stage is the locus of the substantive errors that concern prosecutors and scholars, the stage that SB 524’s disclosure mandate covers, and the only one reproducible without proprietary components. The framework organises sixteen metric definitions into six axes, each targeting pathologies that are documented, doctrinally identified, predicted, or statutory, and states every metric with its construct-validity claim. The axes are not assumed to be statistically independent; their joint structure is examined empirically in the results."
+        },
+        { "type": "subtitle", "text": "Six Axes" },
+        {
+          "type": "table",
+          "caption": "<b>The six axes of FACETS-PR.</b> Each axis is listed with its disciplinary anchor and the pathologies it targets.",
+          "columns": [
+            { "header": "Axis", "align": "left" },
+            { "header": "Construct", "align": "left" },
+            { "header": "Discipline anchor", "align": "left" },
+            { "header": "Pathology", "align": "left" }
+          ],
+          "rows": [
+            { "cells": ["F", "Source fidelity", {"v": "Forensic linguistics; faithfulness in natural-language generation", "class": "t-wrap"}, {"v": "Hallucinated content (D); speaker-attribution errors (D); loss of exact language (I); coreference inconsistency (P)", "class": "t-wrap"}] },
+            { "cells": ["A", "Asymmetric exculpatory recall", {"v": "Evidentiary doctrine: <i>Brady</i>", "class": "t-wrap"}, {"v": "Risk that AI omits innocence-relevant facts under <i>Brady</i> (I)", "class": "t-wrap"}] },
+            { "cells": ["C", "Cognitive disengagement", {"v": "Human-factors automation bias", "class": "t-wrap"}, {"v": "Cognitive offloading; reduced review engagement (I)", "class": "t-wrap"}] },
+            { "cells": ["E", "Equity, dialect parity", {"v": "Sociolinguistics and fairness in machine learning", "class": "t-wrap"}, {"v": "Racial Justice Act exposure; dialect-conditioned disparity (I)", "class": "t-wrap"}] },
+            { "cells": ["T", "Traceability", {"v": "Legal informatics; SB 524", "class": "t-wrap"}, {"v": "Disclosure and audit-trail requirements (statutory)", "class": "t-wrap"}] },
+            { "cells": ["S", "Suspicion inflation", {"v": "Legal natural-language processing; epistemic modality", "class": "t-wrap"}, {"v": "“Generative suspicion” (I); conclusory probable cause (P)", "class": "t-wrap"}] }
+          ],
+          "legend": "Pathologies are labelled documented (D) in a deployed system, identified (I) doctrinally or by human-factors work but not yet observed in one, predicted (P) from generative behaviour, or statutory."
+        },
+        { "type": "subtitle", "text": "Sixteen Metric Definitions" },
+        {
+          "type": "table",
+          "caption": "<b>Metric definitions and the composite.</b> A1 returns two recall figures whose within-item gap is A2, Axis E is an operator applied to other metrics, and C2 was not enabled, so the reported run yields fourteen distinct per-item quantities. Entailment is scored by a natural-language-inference (NLI) model at a stipulated threshold θ&nbsp;=&nbsp;0.6.",
+          "columns": [ { "header": "ID", "align": "left" }, { "header": "Metric", "align": "left" }, { "header": "What it measures", "align": "left" } ],
+          "rows": [
+            { "cells": ["F1", "Named-Entity Hallucination Rate (NEHR)", {"v": "Fraction of named entities in the report that are absent from the transcript.", "class": "t-wrap"}] },
+            { "cells": ["F2", "Verbatim Quotation Retention (VQR)", {"v": "Fraction of evidentiary utterances preserved verbatim, within an edit-distance tolerance τ&nbsp;=&nbsp;0.10, as quoted strings in the report.", "class": "t-wrap"}] },
+            { "cells": ["F3", "Speaker Attribution Accuracy (SAA)", {"v": "Fraction of attribution clauses “<i>X</i> said <i>p</i>” whose aligned transcript turn has speaker <i>X</i>.", "class": "t-wrap"}] },
+            { "cells": ["F4", "Pronoun Consistency Score (PCS)", {"v": "One minus the fraction of named referents carrying pronouns of more than one gender.", "class": "t-wrap"}] },
+            { "cells": ["A1", "Exculpatory and Inculpatory Recall (ER, IR)", {"v": "Recalled fractions of the exculpatory and inculpatory ground-truth utterances, where recall requires entailment by some report sentence without entailment of the utterance’s negation.", "class": "t-wrap"}] },
+            { "cells": ["A2", "Asymmetry Index (ASI)", {"v": "Within-item gap IR&nbsp;−&nbsp;ER on [−1,&nbsp;1], defined only on items carrying both inculpatory and exculpatory ground truth (22 of the 24 evaluated); a positive value is read as a structural <i>Brady</i> risk.", "class": "t-wrap"}] },
+            { "cells": ["C1", "Red-Herring Detection Rate (RHDR)", {"v": "Probability that an injected, factually impossible sentence is absent from the report after an officer-role review pass; an upper bound on reviewer diligence, since a draft that never reproduced the sentence is indistinguishable at review from one the reviewer cleaned.", "class": "t-wrap"}] },
+            { "cells": ["C2", "Latent-Recall Score (LRS)", {"v": "Contrast in fact coverage between a draft-mediated and a transcript-only arm; not enabled in the reported run.", "class": "t-wrap"}] },
+            { "cells": ["E1", "Dialect Parity Score (DPS)", {"v": "Change in a metric <i>M</i> when the non-officer utterances of a Standard American English (SAE) transcript <i>T</i> are rendered into African American English (AAE) as <i>T</i>′: DPS<sub><i>M</i></sub>&nbsp;=&nbsp;<i>M</i>(<i>R</i><sub><i>T</i>′</sub>)&nbsp;−&nbsp;<i>M</i>(<i>R</i><sub><i>T</i></sub>), where <i>R</i><sub><i>T</i></sub> is the draft produced from <i>T</i>.", "class": "t-wrap"}] },
+            { "cells": ["E2", "Suspicion Drift across Dialect (SDxD)", {"v": "E1 applied to each Axis-S metric; a significant positive drift on AAE inputs is flagged as a Racial Justice Act risk signal.", "class": "t-wrap"}] },
+            { "cells": ["T1", "Disclosure-Tag Compliance (DTC)", {"v": "Fraction of reports containing the disclosure statement required by Pen. Code §&nbsp;13663(a)(1), over three wording variants.", "class": "t-wrap"}] },
+            { "cells": ["T2", "Source-Citability Score (SCS)", {"v": "Fraction of declarative report sentences entailed by at least one individual transcript turn; the released implementation applies no declarative filter.", "class": "t-wrap"}] },
+            { "cells": ["S1", "Inferential Insertion Rate (IIR)", {"v": "Fraction of report sentences that carry a legal-conclusion trigger and are entailed by no single transcript turn.", "class": "t-wrap"}] },
+            { "cells": ["S2", "Probable-Cause Embellishment Score (PCES)", {"v": "Fraction of probable-cause sentences carrying a trigger but no token from any of five specificity categories (a time, a sensory verb, a named entity, a quantity, quoted speech).", "class": "t-wrap"}] },
+            { "cells": ["S3", "Epistemic-Modality Drift (EMD)", {"v": "Change from transcript to report in the density of high-certainty minus low-certainty modal markers per 100 words; positive when the report has hardened the transcript’s epistemic stance.", "class": "t-wrap"}] },
+            { "cells": ["S4", "Boilerplate Saturation Index (BSI)", {"v": "Fraction of report sentences carrying at least one of ten policing boilerplate <i>n</i>-grams.", "class": "t-wrap"}] },
+            { "cells": ["FRS", "FACETS Risk Score", {"v": "Composite on [0,&nbsp;1] with uniform axis weights of 1/6. Goodness-oriented axes enter as one minus their mean, EMD is first divided by 5, every constituent is clipped to [0,&nbsp;1], and axes undefined for a draft are omitted with the remaining weights renormalised, so on the SAE split each of Axes F, A, T, and S weighs 1/4. Computed per item and then averaged; lower is better.", "class": "t-wrap"}] }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "group",
+      "title": "Experimental Protocol",
+      "blocks": [
+        { "type": "subtitle", "text": "The BWCSyn-90 Corpus" },
+        {
+          "type": "text",
+          "align": "justify",
+          "body": "<b>BWCSyn-90</b> is a synthetic, ground-truth-annotated BWC corpus. It crosses six incident templates (domestic violence, DUI, drug, financial, property, and traffic) with five recording conditions (clean, chaotic, multi-speaker, code-switched, and extended interview), giving 30 base transcripts. The four non-clean conditions are text-level analogues of degradation scenarios disclosed in the documentation of Axon’s Draft One, the deployed product that motivates this work. Each base transcript is issued in three variants: the Standard American English (SAE) transcript; an African American English (AAE) pairing in which a rule-based transducer re-renders all and only the non-officer utterances, with pairs whose bidirectional NLI entailment falls below 0.7 flagged; and an SAE copy carrying one injected red herring, sampled from a bank of twenty physically impossible sentences. This gives 90 transcripts in total, each annotated with speaker tags and with evidentiary, inculpatory, exculpatory, and named-entity ground truth. The reported run evaluates the 24 items outside the chaotic stratum, which a construction defect made identical to the clean condition; the defect is fixed in the released generator. These items carry 434 turns, 40 evidentiary, 56 inculpatory, and 88 exculpatory utterances, and 164 entity mentions. Exculpatory annotations outnumber inculpatory ones by design, to give the Asymmetry Index a non-trivial base."
+        },
+        { "type": "subtitle", "text": "Models and Settings" },
+        {
+          "type": "text",
+          "align": "justify",
+          "body": "Four open-weight models are served locally at four-bit quantisation through Ollama, so the protocol needs no proprietary interface. Generation uses temperature 0.2, top-p 0.9, a fixed seed, a 2048-token response cap, and a 4096-token context window. Scoring uses a DeBERTa-v3 cross-encoder fine-tuned on MNLI, FEVER-NLI, and ANLI for entailment, the transformer-based spaCy pipeline for entities and parses, and all-MiniLM-L6-v2 sentence embeddings for turn alignment. A deterministic drafting prompt conditions the model on an incident category and a section outline, tags the target utterances with <code>&lt;Q&gt;…&lt;/Q&gt;</code>, instructs the model to preserve them verbatim, forbids invented facts, and asks for a bracketed placeholder where information is missing. A second instance, role-prompted as the reviewing officer, is asked to remove any sentence that is factually impossible or does not reflect what it observed. Each model yields 72 scored reports, namely the SAE draft, the AAE-paired draft, and the reviewed red-herring report for each of the 24 items, for 288 in total from 384 generations."
+        },
+        {
+          "type": "table",
+          "caption": "<b>Open-weight models in the reported panel.</b> Sizes are the on-disk footprint of the default four-bit (Q4_K_M) checkpoints served by the local runtime. All four are far smaller than the proprietary frontier-class models on which commercial products of this type are built.",
+          "columns": [ { "header": "Family", "align": "left" }, { "header": "Model", "align": "left" }, { "header": "Params" }, { "header": "4-bit size" }, { "header": "Coverage" } ],
+          "rows": [
+            { "cells": ["Llama 3.2", "Llama-3.2-3B", "3B", "2.0 GB", "24 items × 3 variants"] },
+            { "cells": ["Llama 3.1", "Llama-3.1-8B", "8B", "4.9 GB", "24 items × 3 variants"] },
+            { "cells": ["Mistral", "Mistral-7B", "7B", "4.4 GB", "24 items × 3 variants"] },
+            { "cells": ["Qwen 2.5", "Qwen2.5-7B", "7B", "4.7 GB", "24 items × 3 variants"] }
+          ]
+        },
+        { "type": "subtitle", "text": "Pre-Specified Hypotheses" },
+        {
+          "type": "list",
+          "ordered": false,
+          "align": "left",
+          "items": [
+            "<b>H1</b> (verbatim disappearance): VQR&nbsp;&lt;&nbsp;0.5 for all models.",
+            "<b>H2</b> (<i>Brady</i> asymmetry): ASI&nbsp;&gt;&nbsp;0 significantly.",
+            "<b>H3</b> (generative suspicion): EMD&nbsp;&gt;&nbsp;0 and IIR&nbsp;&gt;&nbsp;0 significantly for at least one model, especially in the chaotic and extended-interview strata.",
+            "<b>H4</b> (dialect disparity): DPS<sub>EMD</sub>&nbsp;&gt;&nbsp;0.",
+            "<b>H5</b> (automation-bias analogue): RHDR&nbsp;&lt;&nbsp;1.",
+            "<b>H6</b> (disclosure non-spontaneity): DTC&nbsp;≈&nbsp;0 unless the prompt requests it."
+          ]
+        },
+        {
+          "type": "text",
+          "align": "justify",
+          "body": "The hypotheses were fixed before any result was inspected, although no public pre-registration was filed. H1 to H3 are tested with within-model one-sample, one-sided <i>t</i>-tests, Bonferroni-corrected across the four models within each metric (<i>p</i><sub>Bonf</sub>), with effect sizes reported as Cohen’s <i>d</i>&nbsp;=&nbsp;<i>t</i>/√<i>n</i>. H4 is tested one-sided without correction, and a linear mixed-effects model with random intercepts for model and item and fixed effects for the AAE indicator and the recording condition tests H3 and H4 jointly. H5 and H6 are reported as counts. Three departures from the plan are recorded: the chaotic stratum was dropped, a two-sided EMD test was added after the planned one-sided test failed in the opposite direction, and five analyses outside the plan are marked post hoc."
+        }
+      ]
+    },
+    {
+      "type": "group",
+      "title": "Results",
+      "blocks": [
+        {
+          "type": "text",
+          "align": "justify",
+          "body": "Per-model means are reported on the SAE split, the drafts produced from the plain SAE transcripts and the closest analogue to ordinary report drafting. The AAE-paired split supplies the Dialect Parity Scores, and the review pass over the red-herring drafts supplies RHDR. The pre-specified statistics, the composite scores, and all seven figures are computed from the released per-item results file; the post hoc analyses additionally use the released drafts and corpus."
+        },
+        { "type": "subtitle", "text": "Per-Model Summary" },
+        {
+          "type": "text",
+          "align": "justify",
+          "body": "Verbatim Quotation Retention is low everywhere (0.06 to 0.17). Named-Entity Hallucination Rate is lowest for the smallest model (Llama-3.2-3B, 0.082) and highest for Mistral-7B (0.207), so the fidelity ordering does not track parameter count. The Asymmetry Index is positive for all four models, varying by roughly a factor of six. Five quantities need interpretation before they are read as findings, and four of them (SAA, PCS, PCES, and DTC) carry little information separating one model from another; the counts that follow are post hoc. SAA is 1.000 everywhere, the vacuous default: the attribution-clause extractor tests inflected surface forms against lemmatised tokens and matched no clause in any of the 96 SAE drafts, although the drafts do contain such clauses, so F3 is untested. PCS, at 0.542 to 0.646, gives only a loose upper bound on pronoun inconsistency, since 21 of the 44 flagged referents involve the epicene <i>they</i> beside a gendered pronoun. PCES rests on 12 trigger-bearing sentences across the 96 drafts, so its means are dominated by structural zeros. DTC is a genuine measurement but a constant one. The fifth, SCS, invites over-reading: at 0.247 to 0.495 it implies that between half and three-quarters of report sentences are entailed by no <i>single</i> transcript turn, which is not a hallucination rate, and because the released implementation applies no declarative filter, section headings and bracketed placeholders enter its denominator and are entailed by nothing."
+        },
+        {
+          "type": "figure",
+          "image": "static/images/heatmap_metrics.png",
+          "alt": "Per-model FACETS-PR metric heatmap on the SAE split",
+          "width": "100%",
+          "caption": "<b>Per-model FACETS-PR metric heatmap on the SAE split.</b> Rows carry the local runtime’s model tags. Cells are coloured so that higher values are redder; because the “good” direction differs by column, the map should be read against the metric definitions above. Column headers carry each metric’s axis prefix; the Axis-A gap column is headed “AI” because that is the column name used in the results file, which predates the ASI abbreviation."
+        },
+        {
+          "type": "table",
+          "caption": "<b>Per-model metric vector on the SAE split, part 1 of 2 (Axes F and A).</b> Values are averaged over the 24 items each model completed, except ASI, which is averaged over the 22 items on which it is defined and therefore does not equal the difference of the IR and ER columns. ASI is signed; the other columns are proportions on [0,&nbsp;1].",
+          "columns": [
+            { "header": "Model", "align": "left" },
+            { "header": "NEHR" },
+            { "header": "VQR" },
+            { "header": "SAA" },
+            { "header": "PCS" },
+            { "header": "ER" },
+            { "header": "IR" },
+            { "header": "ASI" }
+          ],
+          "rows": [
+            { "cells": ["Llama-3.2-3B", "0.082", "0.167", "1.000", "0.646", "0.322", "0.668", "+0.313"] },
+            { "cells": ["Llama-3.1-8B", "0.164", "0.146", "1.000", "0.542", "0.160", "0.396", "+0.167"] },
+            { "cells": ["Mistral-7B", "0.207", "0.063", "1.000", "0.646", "0.287", "0.385", "+0.050"] },
+            { "cells": ["Qwen2.5-7B", "0.179", "0.167", "1.000", "0.604", "0.388", "0.673", "+0.245"] }
+          ],
+          "legend": "Axis F: NEHR, VQR, SAA, PCS · Axis A: ER, IR, ASI"
+        },
+        {
+          "type": "table",
+          "caption": "<b>Per-model metric vector on the SAE split, part 2 of 2 (Axes T and S, and the composite).</b> EMD is signed; the other columns, including FRS, lie on [0,&nbsp;1]. DTC is zero for every model and item; RHDR (Axis C) is reported under H5 below.",
+          "columns": [
+            { "header": "Model", "align": "left" },
+            { "header": "DTC" },
+            { "header": "SCS" },
+            { "header": "IIR" },
+            { "header": "PCES" },
+            { "header": "EMD" },
+            { "header": "BSI" },
+            { "header": "FRS" }
+          ],
+          "rows": [
+            { "cells": ["Llama-3.2-3B", "0.000", "0.362", "0.043", "0.042", "−0.283", "0.014", "0.373"] },
+            { "cells": ["Llama-3.1-8B", "0.000", "0.311", "0.031", "0.000", "−0.377", "0.080", "0.371"] },
+            { "cells": ["Mistral-7B", "0.000", "0.247", "0.017", "0.125", "−0.373", "0.029", "0.368"] },
+            { "cells": ["Qwen2.5-7B", "0.000", "0.495", "0.022", "0.000", "−0.183", "0.028", "0.354"] }
+          ],
+          "legend": "Axis T: DTC, SCS · Axis S: IIR, PCES, EMD, BSI · FRS: composite risk (lower is better)"
+        },
+        { "type": "subtitle", "text": "Hypothesis Verdicts" },
+        {
+          "type": "table",
+          "caption": "<b>Pre-specified hypothesis verdicts across the four models.</b> “n.s.” abbreviates not significant.",
+          "columns": [
+            { "header": "H", "align": "left" },
+            { "header": "Claim", "align": "left" },
+            { "header": "Verdict", "align": "left" },
+            { "header": "Key evidence", "align": "left" }
+          ],
+          "rows": [
+            { "cells": ["H1", "VQR &lt; 0.5", "Supported", {"v": "VQR 0.06–0.17; <i>p</i><sub>Bonf</sub>&nbsp;&lt;&nbsp;0.001; |<i>d</i>| up to 1.95. Post hoc: 45.6% of evidentiary-utterance slots are verbatim but unquoted.", "class": "t-wrap"}] },
+            { "cells": ["H2", "ASI &gt; 0", "Partial", {"v": "ASI +0.313 (<i>p</i><sub>Bonf</sub>&nbsp;=&nbsp;0.007) and +0.245 (<i>p</i><sub>Bonf</sub>&nbsp;=&nbsp;0.030); two models n.s. after correction. Not explained by ground-truth set sizes.", "class": "t-wrap"}] },
+            { "cells": ["H3", "EMD &gt; 0, IIR &gt; 0", "Partial, reversed", {"v": "IIR&nbsp;&gt;&nbsp;0 in the cross-model fit (<i>p</i>&nbsp;=&nbsp;0.004), though no per-model test survives correction; EMD&nbsp;&lt;&nbsp;0 throughout.", "class": "t-wrap"}] },
+            { "cells": ["H4", "DPS<sub>EMD</sub> &gt; 0", "Not supported", {"v": "No significant drift on EMD or IIR; AAE coefficient <i>p</i>&nbsp;=&nbsp;0.520 (EMD) and 0.414 (IIR). Post hoc: no significant drift on PCES, BSI, or ASI either.", "class": "t-wrap"}] },
+            { "cells": ["H5", "RHDR &lt; 1", "Supported (3 of 4)", {"v": "19/96 red herrings retained; mean RHDR 0.80.", "class": "t-wrap"}] },
+            { "cells": ["H6", "DTC ≈ 0", "Supported", {"v": "Disclosure string never emitted (0/288).", "class": "t-wrap"}] }
+          ]
+        },
+        { "type": "subtitle", "text": "H1: Verbatim Disappearance" },
+        {
+          "type": "text",
+          "align": "justify",
+          "body": "H1 is supported, with a different mechanism from the one predicted. VQR is far below one half for every model, and the one-sided test rejects VQR&nbsp;≥&nbsp;0.5 in each case at <i>p</i><sub>Bonf</sub>&nbsp;&lt;&nbsp;0.001 with large effect sizes (<i>d</i> from −1.05 to −1.95), though a large |<i>d</i>| partly reflects a discrete variable near its floor. Because VQR counts only quotation-marked retention, a post hoc audit checked each evidentiary utterance for verbatim reproduction anywhere in the draft at the same tolerance. Of the 160 evidentiary-utterance slots, 25 (15.6%) appear as a quoted string, 73 (45.6%) appear verbatim with the quotation marks stripped, and only 62 (38.8%) are paraphrased or absent. Pooled across the panel, the dominant failure is therefore that the words survive while the marking identifying them as the speaker’s own does not, though the split is close (73 against 62 of the 135 unretained slots) and far from uniform: Qwen2.5-7B truly loses only 5.0% of slots, whereas Mistral-7B paraphrases or drops 82.5%. The distinction matters: an unmarked verbatim string cannot be relied on downstream as the speaker’s exact words, yet lost marking can be remedied by a formatting constraint, whereas lost wording calls for a different model."
+        },
+        {
+          "type": "table",
+          "caption": "<b>Disposition of evidentiary utterances on the SAE split (post hoc).</b> “Quoted” is the VQR numerator; “Unquoted verbatim” counts utterances reproduced within τ&nbsp;=&nbsp;0.10 somewhere in the draft but not inside quotation marks; “Paraphrased or absent” is the remainder. Each cell gives the number of slots and, in parentheses, its share; slot counts are per model over the 24 evaluated items.",
+          "columns": [
+            { "header": "Model", "align": "left" },
+            { "header": "Slots" },
+            { "header": "Quoted" },
+            { "header": "Unquoted verbatim" },
+            { "header": "Paraphrased or absent" }
+          ],
+          "rows": [
+            { "cells": ["Llama-3.2-3B", "40", "8 (0.200)", "22 (0.550)", "10 (0.250)"] },
+            { "cells": ["Llama-3.1-8B", "40", "7 (0.175)", "16 (0.400)", "17 (0.425)"] },
+            { "cells": ["Mistral-7B", "40", "3 (0.075)", "4 (0.100)", "33 (0.825)"] },
+            { "cells": ["Qwen2.5-7B", "40", "7 (0.175)", "31 (0.775)", "2 (0.050)"] },
+            { "class": "baseline-row", "cells": ["Pooled", "160", "25 (0.156)", "73 (0.456)", "62 (0.388)"] }
+          ]
+        },
+        { "type": "subtitle", "text": "H2: <i>Brady</i> Asymmetry" },
+        {
+          "type": "text",
+          "align": "justify",
+          "body": "H2 is partially supported. ASI is positive for all four models and survives correction for two, Llama-3.2-3B (+0.313, <i>p</i><sub>Bonf</sub>&nbsp;=&nbsp;0.007, <i>d</i>&nbsp;=&nbsp;0.70) and Qwen2.5-7B (+0.245, <i>p</i><sub>Bonf</sub>&nbsp;=&nbsp;0.030, <i>d</i>&nbsp;=&nbsp;0.56). It is nominally significant for Llama-3.1-8B (+0.167, <i>p</i>&nbsp;=&nbsp;0.046) but does not clear the corrected threshold, and Mistral-7B shows only a small, non-significant asymmetry. A post hoc test addresses the set-size alternative: recall over the larger of two ground-truth sets is mechanically lower, and exculpatory sets are larger by design (88 against 56 utterances). Yet ASI does not rise with the item-level imbalance between the two set sizes (<i>r</i>&nbsp;=&nbsp;−0.083, <i>p</i>&nbsp;=&nbsp;0.712), and on the nine items where the exculpatory set is not larger, so that the mechanism predicts no asymmetry, mean ASI is +0.253 and significantly positive (<i>p</i>&nbsp;=&nbsp;0.001). The asymmetry therefore survives the ground-truth-size explanation. Narrative centrality, the tendency of inculpatory utterances in a scripted encounter to be central to the story and so preserved by any summariser, remains a live alternative that this corpus cannot separate from doctrinal category."
+        },
+        {
+          "type": "figure",
+          "image": "static/images/asymmetry.png",
+          "alt": "Box plots of the Asymmetry Index per model",
+          "width": "80%",
+          "caption": "<b>Distribution of the Asymmetry Index per model on the SAE split.</b> ASI&nbsp;=&nbsp;IR&nbsp;−&nbsp;ER; values above the dashed line indicate that inculpatory content is retained more reliably than exculpatory content, the structural <i>Brady</i> risk tested in H2. Every distribution straddles zero, with four to seven of the 22 items negative, so a positive mean is a tendency across items rather than a property of each."
+        },
+        { "type": "subtitle", "text": "H3: Generative Suspicion" },
+        {
+          "type": "text",
+          "align": "justify",
+          "body": "H3 is supported in the cross-model fit and reversed on its other component. IIR is positive in every model and nominally significant in three, but no per-model test survives correction. The cross-model fit carries the weight: the mixed-effects intercept, estimating the mean insertion rate for a clean-condition SAE item, is +0.054 (<i>p</i>&nbsp;=&nbsp;0.004). Every model therefore inserts such sentences and the pooled rate is reliably above zero, though on small counts: sixteen insertions among the 820 sentences of the 96 SAE drafts, concentrated in fourteen drafts, give per-model rates of 0.017 to 0.043 averaged over all four conditions, about half the clean-condition intercept. EMD runs opposite to the prediction. It is negative for every model, and a post hoc two-sided test rejects EMD&nbsp;=&nbsp;0 in all four after correction, so the drafts <i>soften</i> rather than harden the transcript’s epistemic stance. In this run, “generative suspicion” is expressed through inserted inferences rather than more confident phrasing."
+        },
+        {
+          "type": "figure",
+          "image": "static/images/emd_distribution.png",
+          "alt": "Violin plots of Epistemic-Modality Drift per model",
+          "width": "80%",
+          "caption": "<b>Epistemic-Modality Drift per model on the SAE split.</b> Positive values would indicate a hardened epistemic stance; the observed mass lies below zero, so the drafts in fact hedge more than the transcripts (H3)."
+        },
+        { "type": "subtitle", "text": "H4: Dialect Disparity" },
+        {
+          "type": "text",
+          "align": "justify",
+          "body": "H4 is not supported, on a narrower basis than the hypothesis implies. DPS<sub>EMD</sub> does not differ significantly from zero for any model, and the AAE coefficient in the mixed-effects fit is small and non-significant for both EMD (−0.026, <i>p</i>&nbsp;=&nbsp;0.520) and IIR (+0.010, <i>p</i>&nbsp;=&nbsp;0.414). Only EMD was tested per model, and EMD and IIR in the fits, so E2 was half executed and was completed post hoc. The full parity matrix of thirteen metrics by four models, shown in the heatmap below, is neither uniformly near zero nor uniformly favourable: five untested entries are large relative to their base, three favouring the AAE rendering and two the other way. DPS<sub>ASI</sub> is positive for all four models (+0.011 to +0.083), so the recall gap is wider on AAE-paired transcripts, but post hoc tests do not reject zero. We read this as the absence of a <i>detectable</i> dialect effect on any Axis-S metric or on the Asymmetry Index in this corpus, not as a finding of parity and still less as evidence of dialect fairness in deployment."
+        },
+        {
+          "type": "figure",
+          "image": "static/images/dps_heatmap.png",
+          "alt": "Dialect Parity Score heatmap per metric and model",
+          "width": "100%",
+          "caption": "<b>Dialect Parity Score heatmap per metric and model.</b> Cells show AAE minus SAE; blue and red indicate opposite directions of drift. The two metrics on which H4 was tested, EMD and IIR, sit close to zero; five untested cells do not (DPS<sub>SCS</sub> for Llama-3.1-8B, DPS<sub>VQR</sub> and DPS<sub>PCS</sub> for Qwen2.5-7B, and DPS<sub>PCS</sub> and DPS<sub>ER</sub> for Mistral-7B). As in the metric heatmap, the column headed “AI” is the Asymmetry Index ASI."
+        },
+        { "type": "subtitle", "text": "H5 and H6: Automation-Bias Analogue and Disclosure" },
+        {
+          "type": "text",
+          "align": "justify",
+          "body": "H5 is supported for three of the four models, and H6 is supported. Nineteen of the 96 injected red herrings survived the officer-role review pass, for a mean RHDR of 0.80 and per-model rates of 0.875, 0.625, 0.708, and 1.000 for Llama-3.2-3B, Llama-3.1-8B, Mistral-7B, and Qwen2.5-7B. Roughly one obviously false sentence in five survived a pass whose instruction named the target, which makes 0.80 a ceiling rather than a field estimate; Qwen2.5-7B removed every one, so the failure is model-dependent. Not one of the 288 scored reports emitted the statutory disclosure string, so an unmodified drafting pipeline does not satisfy Pen. Code §&nbsp;13663(a)(1), which places the compliance obligation on the surrounding system rather than on the model."
+        },
+        {
+          "type": "figure",
+          "image": "static/images/rhdr_by_model.png",
+          "alt": "Red-Herring Detection Rate per model",
+          "width": "80%",
+          "caption": "<b>Red-Herring Detection Rate per model on the review pass.</b> The dotted line marks perfect detection; three of the four models fall short of it, leaving some deliberately impossible sentences in the final report (H5)."
+        },
+        { "type": "subtitle", "text": "Composite Risk and Joint Structure" },
+        {
+          "type": "text",
+          "align": "justify",
+          "body": "The composite FACETS Risk Score clusters between 0.35 and 0.38, with Qwen2.5-7B lowest and Llama-3.2-3B highest, but the 95% bootstrap intervals overlap heavily, so we do not read the ordering as a separation. Stratifying by recording condition shows no consistent ordering, although <i>clean</i> is the highest-risk condition for three of the four models; the within-model spread across conditions is 0.023 to 0.085. Two properties limit the composite: DTC and SAA are constant, so they add the same amount to every score without discriminating, and clipping zeroes the EMD term on 236 of the 288 scored items, leaving the composite nearly blind to the epistemic-stance reversal. This is why the axis vector is reported first. Post hoc Spearman correlations between per-item metrics on the SAE split, pooled across models with the constant SAA and DTC omitted, exceed 0.40 in magnitude only for the definitional pairs ASI–IR (+0.80) and ASI–ER (−0.51). Over the remaining 53 pairs the median absolute coefficient is 0.11 and the largest in magnitude is −0.34 (PCES with EMD), so the axes behave as separable measurements."
+        },
+        {
+          "type": "figure",
+          "image": "static/images/frs_bar.png",
+          "alt": "Composite FACETS Risk Score by model with bootstrap confidence intervals",
+          "width": "80%",
+          "caption": "<b>Composite FACETS Risk Score by model on the SAE split.</b> Error bars are 95% bootstrap confidence intervals (2000 resamples); lower is better."
+        },
+        {
+          "type": "figure",
+          "image": "static/images/difficulty_strata.png",
+          "alt": "FACETS Risk Score by recording condition and model",
+          "width": "80%",
+          "caption": "<b>FACETS Risk Score by recording condition on the SAE split.</b> Bars are grouped by condition; the chaotic stratum is absent from the reported run."
+        },
+        {
+          "type": "callout",
+          "body": "<b>Scope of the evidence.</b> These magnitudes characterise the instrument on a designed stress test, not any commercial tool. The convergent-validity check the framework specifies, an LLM-as-judge protocol in which a materially stronger model rates each automatic score, was not executed, so the results above are the output of the automatic instruments alone."
+        }
+      ]
+    },
+    {
+      "type": "group",
+      "title": "Limitations and Ethics",
+      "blocks": [
+        { "type": "subtitle", "text": "Limitations" },
+        {
+          "type": "list",
+          "ordered": false,
+          "align": "left",
+          "items": [
+            "<b>Synthetic corpus.</b> BWCSyn-90 is a behavioural test suite, not a sample of real BWC encounters, so the magnitudes measured on it are not deployment base rates. The excluded chaotic stratum is where H3 predicted the strongest effect.",
+            "<b>Model capability.</b> All four checkpoints are three to eight billion parameters at four-bit quantisation. Several results, including the failure to follow preservation markup, the low single-turn citability, and the near-total absence of articulated probable cause, are plausibly artefacts of the gap to the frontier-class model on which the motivating commercial system is reported to be built.",
+            "<b>Simulated review.</b> The Axis-C reviewer is a role-prompted model rather than a human officer, so no result estimates how officers behave.",
+            "<b>Dialect probe.</b> The dialect null is bounded three ways: an unvalidated transducer, a parity comparison that shifts its own reference because each member of a pair is scored against its own transcript, and a scorer drawn from the class of NLI models shown to degrade under AAE morphosyntax.",
+            "<b>Lexicons.</b> The Axis-S metrics depend on curated lexicons whose high-certainty list contains bare auxiliaries such as <i>will</i> and <i>did</i>, far denser in dialogue than in narrative, so part of the negative EMD drift may be a register artefact.",
+            "<b>Unreported quantities.</b> Four quantities the design depends on are unreported: the disposition of flagged AAE pairs, the red herring’s draft-stage carry-through rate, the agreement of the automatic metrics with the judge protocol, and a sensitivity curve over θ. The last two take priority, since without the curve no level is interpretable in absolute terms and without the judge protocol no metric has validity evidence."
+          ]
+        },
+        { "type": "subtitle", "text": "Ethics and Broader Impact" },
+        {
+          "type": "list",
+          "ordered": false,
+          "align": "left",
+          "items": [
+            "<b>Synthetic dialect data.</b> The AAE renderings come from a rule-based transducer, not from AAE speakers. They are a controlled probe stimulus, do not represent the sociolinguistic range of the variety, and should not be used to train or evaluate any system meant to model or generate AAE.",
+            "<b>Dual use.</b> The red-herring technique could equally test how much fabricated content a review process tolerates, which is why the twenty-sentence bank is confined to physically impossible content.",
+            "<b>What a score licenses.</b> A FACETS-PR vector characterises a drafting system on a designed stress test, not the accuracy of any particular report, the prejudice suffered by any defendant, or the diligence of any officer. A favourable score on a synthetic corpus does not validate a deployed system."
+          ]
+        }
+      ]
+    },
+    {
+      "type": "group",
+      "title": "Data and Code",
+      "blocks": [
+        {
+          "type": "text",
+          "align": "justify",
+          "body": "The corpus generator, the annotated corpus, the evaluation harness, the analysis module, the realised results file, and the code that produces every table and figure are available at <a href='https://github.com/Ezharjan/FACETS' target='_blank' rel='noopener'>github.com/Ezharjan/FACETS</a> under the MIT Licence. The released results file also holds rows for the chaotic stratum and for two checkpoints outside the reported panel, so the pre-specified statistics, the composite scores, and all seven figures are recovered without re-running generation by restricting the analysis to the four-model panel and the 24 evaluated items; the post hoc analyses additionally require the released drafts file and corpus. The synthetic corpus contains no real incident, person, or personally identifying information, and no agency recording, transcript, or report was used at any stage."
+        },
+        { "type": "subtitle", "text": "Reproducing the Run" },
+        {
+          "type": "html",
+          "align": "justify",
+          "body": "<p>From the repository root, with the Ollama daemon running, install the dependencies and run the three scripts below to rebuild the corpus, evaluate the four-model panel, and regenerate the statistics and figures; generation takes hours on a single GPU. Because the released generator restores the chaotic stratum, a fresh run evaluates all 30 base items rather than the 24 reported. A single fixed seed (<code>0xCDAA48</code>) makes the corpus exactly reproducible and the drafts reproducible up to the determinism the local runtime provides.</p><pre><code>pip install -r requirements.txt\npython -m spacy download en_core_web_trf\n\npython generate_corpus.py --out data/bwcsyn90.json\n\npython run_evaluation.py --corpus data/bwcsyn90.json \\\n    --models llama3.2:3b llama3.1:8b mistral:7b qwen2.5:7b \\\n    --out results/facets_pr_results.csv \\\n    --write-drafts-to results/drafts.jsonl\n\npython analyze_results.py --csv results/facets_pr_results.csv \\\n    --figs results/figures --report results/report.txt</code></pre>"
+        }
+      ]
+    }
+  ],
+  "poster": { "enabled": false, "title": "Poster", "file": "paper_poster.pdf" },
+  "bibtex": {
+    "title": "BibTeX",
+    "entry": "@inproceedings{aiersilan2026measuring,\n  title={Measuring Source Fidelity, Exculpatory Recall, and Generative\n         Suspicion in {AI}-Drafted Police Reports},\n  author={Aiersilan, Aizierjiang and Wuernikebai, Yeershanati},\n  booktitle={AAAI 2026 Fall Symposium Series},\n  year={2026}\n}"
+  },
+  "footer": { "showLinks": false, "text": "© 2026 Aizierjiang Aiersilan." }
+}
