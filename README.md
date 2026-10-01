@@ -17,10 +17,10 @@ synthetic BWCSyn-90 body-worn camera corpus.
 |---------|--------|--------|
 | Paper   | <https://aaai.org/conference/fall-symposia/2026-fall-symposium-series-2/> | Placeholder (AAAI FSS 2026 main page); replace with the published paper URL |
 | arXiv   | <https://arxiv.org/> | Placeholder (arXiv main page); replace with the arXiv abstract URL |
-| Code    | <https://github.com/Ezharjan/FACETS> | Final |
+| Confab  | <https://cal.com/ezhar/30min> | Final |
 | Dataset | <https://github.com/Ezharjan/FACETS/tree/master/data> | Final (BWCSyn-90 corpus) |
 | Poster  | `paper_poster.pdf` | Hidden until the real poster is added |
-| Confab  | <https://cal.com/ezhar/30min> | Final |
+| Code    | <https://github.com/Ezharjan/FACETS> | Final |
 
 To show the poster, replace `paper_poster.pdf` with the paper's poster (an
 unencrypted PDF), then set `"poster": { "enabled": true, ... }` and the Poster
