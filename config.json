@@ -28,7 +28,7 @@
       "type": "paper",
       "label": "Paper",
       "icon": "fas fa-file-pdf",
-      "url": "https://aaai.org/conference/fall-symposia/2026-fall-symposium-series-2/",
+      "url": "https://doi.org/10.1609/aaaiss.v10i1.43410",
       "enabled": true
     },
     { "type": "arxiv", "label": "arXiv", "icon": "ai ai-arxiv", "url": "https://arxiv.org/", "enabled": true },
